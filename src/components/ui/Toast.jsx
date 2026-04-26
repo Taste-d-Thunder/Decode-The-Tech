@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { classNames } from '@/lib/utils';
 import styles from './Toast.module.css';

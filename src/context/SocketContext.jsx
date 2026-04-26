@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { socket } from '@/lib/socket';
+import { socket, initSocket } from '@/lib/socket';
 
 const SocketContext = createContext(null);
 
@@ -9,7 +9,7 @@ export function SocketProvider({ children }) {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    socket.connect();
+    initSocket();
 
     function onConnect() {
       setIsConnected(true);
