@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime      @default(now())
+  competitions Competition[]
+}
+
+model Competition {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  rules       String
+  joinCode    String       @unique
+  status      String       @default("DRAFT") // DRAFT, WAITING, ACTIVE, PAUSED, ENDED, ARCHIVED
+  isDraft     Boolean      @default(true)
+  adminId     String
+  admin       Admin        @relation(fields: [adminId], references: [id])
+  createdAt   DateTime     @default(now())
+  startedAt   DateTime?
+  endedAt     DateTime?
+  rounds      Round[]
+  teams       Team[]
+}
+
+model Round {
+  id                  String       @id @default(uuid())
+  competitionId       String
+  competition         Competition  @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  orderIndex          Int
+  title               String
+  description         String       @default("")
+  timeLimitSeconds    Int
+  isLocked            Boolean      @default(true)
+  autoSubmitOnTimeout Boolean      @default(true)
+  allowBackNavigation Boolean      @default(false)
+  shuffleQuestions    Boolean      @default(false)
+  passingScore        Float?
+  status              String       @default("DRAFT") // DRAFT, READY, ACTIVE, COMPLETED
+  questions           Question[]
+  submissions         Submission[]
+}
+
+model Question {
+  id               String   @id @default(uuid())
+  roundId          String
+  round            Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  type             String   // MCQ, TRUE_FALSE, MATCH, IMAGE, SHORT_ANSWER, ORDERING
+  text             String
+  imageUrl         String?
+  options          String   // JSON stringified array of options
+  correctAnswer    String   // JSON stringified answer structure
+  marks            Float
+  negativeMarks    Float    @default(0)
+  timeLimitSeconds Int?
+  difficulty       String   @default("MEDIUM") // EASY, MEDIUM, HARD
+  isRequired       Boolean  @default(true)
+  randomizeOptions Boolean  @default(false)
+  explanation      String?
+  orderIndex       Int
+}
+
+model Team {
+  id              String       @id @default(uuid())
+  competitionId   String
+  competition     Competition  @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  teamName        String
+  teamId          String       // Unique team ID per competition entered by user
+  sessionToken    String       @unique
+  status          String       @default("WAITING") // WAITING, ACTIVE, FINISHED, DISCONNECTED
+  currentRoundIndex Int        @default(0)
+  joinedAt        DateTime     @default(now())
+  submissions     Submission[]
+
+  @@unique([competitionId, teamId])
+}
+
+model Submission {
+  id              String   @id @default(uuid())
+  teamId          String
+  team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  roundId         String
+  round           Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  answers         String   // JSON stringified object of { questionId: answer }
+  score           Float    @default(0)
+  maxScore        Float    @default(0)
+  startedAt       DateTime @default(now())
+  submittedAt     DateTime?
+  isAutoSubmitted Boolean  @default(false)
+
+  @@unique([teamId, roundId])
+}

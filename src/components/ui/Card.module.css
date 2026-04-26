@@ -1,0 +1,46 @@
+.card {
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.header {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.content {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+
+.footer {
+  padding: 1.5rem;
+  padding-top: 0;
+  display: flex;
+  align-items: center;
+}

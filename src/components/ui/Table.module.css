@@ -1,0 +1,63 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.table {
+  width: 100%;
+  caption-side: bottom;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.header {
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.body {
+  /* No specific styles needed for body container typically */
+}
+
+.footer {
+  background-color: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+  font-weight: 500;
+}
+
+.row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.row:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.head {
+  height: 3rem;
+  padding: 0 1rem;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.cell {
+  padding: 1rem;
+  vertical-align: middle;
+  color: var(--text-primary);
+}
+
+.caption {
+  padding: 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
